@@ -373,7 +373,7 @@ public class MainWindow extends javax.swing.JFrame {
                 
               con = DriverManager.getConnection("jdbc:mysql://" + txtServer.getText() + ":8080/world", "root", "");
              // Zeilen mittels einer PreparedStatement löschen 
-            PreparedStatement dlt = con.prepareStatement("DELETE FROM city WHERE"+primary_key+"=?");
+            PreparedStatement dlt = con.prepareStatement("DELETE * FROM city WHERE"+primary_key+"=?");
             dlt.setInt(2, id);
                 System.out.println(dlt);
 
@@ -386,7 +386,7 @@ public class MainWindow extends javax.swing.JFrame {
         }
          }
          else{
-             System.out.println("rip");
+             System.out.println("");
          }
     
         

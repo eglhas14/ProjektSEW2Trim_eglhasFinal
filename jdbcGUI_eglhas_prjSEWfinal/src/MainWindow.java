@@ -258,33 +258,55 @@ public class MainWindow extends javax.swing.JFrame {
             
             
         } catch (SQLException ex) {
+            
+            // Exception ausloesen wenn die Verbindung nicht erfolgreich ist.
             System.out.println("Could not connect to world database!");
             javax.swing.JOptionPane.showMessageDialog(this, "Error connecting to database!");
         }
     }//GEN-LAST:event_btnConnectActionPerformed
 
     
-    //Methode fuer die 
+    //Methode fuer die Registrierung der Veraenderungen auf die Tabelle.
     private void tableModelChanged(TableModelEvent e) {
+        
+        
+        
         System.out.println("table changed");
+        
+        // Erste Zeile in einer Variable speichern
         int row = e.getFirstRow();
+        
+        // Spaltenname in einer String speichern
         String columnName = 
          tblEntries.getModel().getColumnName(e.getColumn());
-                
-        int id = 
-                Integer.parseInt(tblEntries.getModel().getValueAt(row, pkPosition).toString());
+        
+        
+        // ID rausholen und in einer Variable speichern
+        int id = Integer.parseInt(tblEntries.getModel().getValueAt(row, pkPosition).toString());
           System.out.println(columnName +" " +  id);
-
+        
+          
+        // Die veraenderte Datensatz/Zeile rausnehmen und in einer Variable speichern. 
         String entry_changed = 
                 tblEntries.getModel().getValueAt(row, e.getColumn()).toString();  
         try {
+            
+            // Ein Objekt der Typ PreparedStatement initialisieren.
             PreparedStatement update =
-                    con.prepareStatement(
+                    con.prepareStatement( // Die Tabelle city andern/updaten nach dem user input 
                             "UPDATE city SET "+ columnName + "= ? WHERE " + primary_key + " = ?");
+            
+            // Den Objekt die geaenderte Datensaetze hineinfuegen
             update.setString(1, entry_changed);
             update.setInt(2, id);
-            System.out.println(update);
-            System.out.println(update.executeUpdate() + " rows changed");
+            
+            System.out.println(update); // Die update drucken. 
+            
+            // Führt die angegebene SQL-Anweisung aus. Dies ist in unserem Fall eine  
+            // UPDATE Anweisung 
+            // die nichts zurückgibt
+            //Das drucken wir aus, um zu zeigen welche Zeilen upgedated wurden. 
+            System.out.println(update.executeUpdate() + " rows changed"); 
             
         } catch (SQLException ex) {
             System.out.println("Error updating table");
@@ -297,10 +319,22 @@ public class MainWindow extends javax.swing.JFrame {
     
 
     private void btnDisconnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDisconnectActionPerformed
+       //Hier folgt die Funktionalitaet der Disconnect Button
+        
+        
         try {
+            
+            // Wie der Name schon sagt, duerfen wir hier die Verbindung mit der Datenbank 
+            //schliessen. 
+            
+            
+            
             con.close();
+            
+            // Der Connect Button kann ruhig auf true gesetzt werden d.h nach der Disconnect
+            // konnen wir noch einmal die Verbindung zuruecksetzen. 
             btnConnect.setEnabled(true);
-            txtServer.setEnabled(true);
+            txtServer.setEnabled(true); 
             btnDisconnect.setEnabled(false);
 
         } catch (SQLException ex) {

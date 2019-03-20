@@ -117,6 +117,11 @@ public class MainWindow extends javax.swing.JFrame {
         jScrollPane1.setViewportView(tblEntries);
 
         btnDelete.setText("Delete");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -348,6 +353,42 @@ public class MainWindow extends javax.swing.JFrame {
         System.out.println(evt.getX());
         System.out.println("mouse entered on label");        // TODO add your handling code here:
     }//GEN-LAST:event_lblServerMouseEntered
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        
+        int row=tblEntries.getSelectedRow(); // Die selektierte Row in einer Variable speichern. 
+        
+        System.out.println("Löschen von der Spalte");
+        
+        // Es wird uberpruft nach dem Finden von der letzten Zeile die nicht geloscht werden soll. 
+         if(row!= tblEntries.getModel().getRowCount()-1){
+          
+       
+            //id rausholen-> in einer Variable speichern
+            int id= (int) tblEntries.getModel().getValueAt(row,pkPosition); 
+          
+            
+            try{
+             // Zeilen mittels einer PreparedStatement löschen 
+            PreparedStatement dlt = con.prepareStatement("DELETE FROM city WHERE"+primary_key+"=?");
+            dlt.setInt(2, id);
+                System.out.println(dlt);
+
+            System.out.println(dlt.executeUpdate()+"Rows deleted");
+            tblEntries.setModel(new DefaultTableModel());
+        }catch(SQLException e){
+            System.out.println("Die Zeile konnte nicht geloescht werden");
+            
+        }
+         }
+         else{
+             System.out.println("rip");
+         }
+    
+        
+        
+        
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     /**
      * @param args the command line arguments

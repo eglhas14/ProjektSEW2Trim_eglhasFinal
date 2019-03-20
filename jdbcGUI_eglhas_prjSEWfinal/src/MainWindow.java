@@ -369,12 +369,16 @@ public class MainWindow extends javax.swing.JFrame {
           
             
             try{
+                
+                
+              con = DriverManager.getConnection("jdbc:mysql://" + txtServer.getText() + ":8080/world", "root", "");
              // Zeilen mittels einer PreparedStatement löschen 
             PreparedStatement dlt = con.prepareStatement("DELETE FROM city WHERE"+primary_key+"=?");
             dlt.setInt(2, id);
                 System.out.println(dlt);
 
             System.out.println(dlt.executeUpdate()+"Rows deleted");
+            //Tabelle renew-en
             tblEntries.setModel(new DefaultTableModel());
         }catch(SQLException e){
             System.out.println("Die Zeile konnte nicht geloescht werden");
